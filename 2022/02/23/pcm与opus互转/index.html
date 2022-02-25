@@ -6,13 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://GeanQin.github.io">
-  <title>Archives | Gean&#39;s blog</title>
+  <title>pcm与opus互转 | Gean&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Gean&#39;s blog">
-<meta property="og:url" content="https://geanqin.github.io/archives/page/2/index.html">
+  <meta name="description" content="Opus简介Opus是什么Opus是一个有损声音编码的格式，由Xiph.Org基金会开发，之后由互联网工程任务(IETF)组进行标准化，目标是希望用单一格式包含声音和语音，取代Speex和Vorbis，且适用于网络上低延迟的实时语音频传输场景，标准格式定义于RFC 6716文件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pcm与opus互转">
+<meta property="og:url" content="https://geanqin.github.io/2022/02/23/pcm%E4%B8%8Eopus%E4%BA%92%E8%BD%AC/index.html">
 <meta property="og:site_name" content="Gean&#39;s blog">
+<meta property="og:description" content="Opus简介Opus是什么Opus是一个有损声音编码的格式，由Xiph.Org基金会开发，之后由互联网工程任务(IETF)组进行标准化，目标是希望用单一格式包含声音和语音，取代Speex和Vorbis，且适用于网络上低延迟的实时语音频传输场景，标准格式定义于RFC 6716文件。">
+<meta property="article:published_time" content="2022-02-23T13:25:08.000Z">
+<meta property="article:modified_time" content="2022-02-25T02:27:16.209Z">
 <meta property="article:author" content="吉 安">
+<meta property="article:tag" content="编码">
+<meta property="article:tag" content="音视频">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Gean&#39;s blog" type="application/atom+xml">
@@ -173,158 +179,96 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-pcm与opus互转" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pcm与opus互转
+    </h1>
+  
+
+        
+        <a href="/2022/02/23/pcm%E4%B8%8Eopus%E4%BA%92%E8%BD%AC/" class="archive-article-date">
+  	<time datetime="2022-02-23T13:25:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-02-23</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Opus简介"><a href="#Opus简介" class="headerlink" title="Opus简介"></a>Opus简介</h1><h2 id="Opus是什么"><a href="#Opus是什么" class="headerlink" title="Opus是什么"></a>Opus是什么</h2><p>Opus是一个有损声音编码的格式，由Xiph.Org基金会开发，之后由互联网工程任务(IETF)组进行标准化，目标是希望用单一格式包含声音和语音，取代Speex和Vorbis，且适用于网络上低延迟的实时语音频传输场景，标准格式定义于RFC 6716文件。</p>
+<a id="more"></a>
+
+<h2 id="为什么用Opus"><a href="#为什么用Opus" class="headerlink" title="为什么用Opus"></a>为什么用Opus</h2><ul>
+<li>Opus格式是一个开放格式，使用上没有任何专利或限制。</li>
+<li>Opus延时低。16位深16K采样率PCM一帧：1260bit，G711a ：640bit，Opus才100左右，没有声音时才二三十。</li>
+</ul>
+<h2 id="怎么样用Opus"><a href="#怎么样用Opus" class="headerlink" title="怎么样用Opus"></a>怎么样用Opus</h2><p>从官网获取源码：<a href="http://www.opus-codec.org/" target="_blank" rel="noopener">http://www.opus-codec.org/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;archive.mozilla.org&#x2F;pub&#x2F;opus&#x2F;opus-1.3.1.tar.gz</span><br><span class="line">tar -zxvf opus-1.3.1.tar.gz</span><br><span class="line">cd opus-1.3.1</span><br><span class="line">.&#x2F;configure --prefix&#x3D;$your_install_dir</span><br><span class="line">make; make install</span><br></pre></td></tr></table></figure>
+
+<p>就可以在$your_install_dir中获得lib文件和头文件了。我们摄像头用可以直接放工程里编（工程里已经有了）。</p>
+<h1 id="libopus使用"><a href="#libopus使用" class="headerlink" title="libopus使用"></a>libopus使用</h1><h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><h3 id="创建编码器"><a href="#创建编码器" class="headerlink" title="创建编码器"></a>创建编码器</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * OPUS_APPLICATION_VOIP 视频会议</span></span><br><span class="line"><span class="comment"> * OPUS_APPLICATION_AUDIO 高保真</span></span><br><span class="line"><span class="comment"> * OPUS_APPLICATION_RESTRICTED_LOWDELAY 低延迟，但是效果差</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">encoder = opus_encoder_create(sampling_rate, channels, OPUS_APPLICATION_VOIP, &amp;err);</span><br><span class="line"><span class="keyword">if</span> (err != OPUS_OK)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Cannot create encoder: %s\n"</span>, opus_strerror(err));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置编码器"><a href="#设置编码器" class="headerlink" title="设置编码器"></a>设置编码器</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * OPUS_SIGNAL_VOICE 语音</span></span><br><span class="line"><span class="comment"> * OPUS_SIGNAL_MUSIC 音乐</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_SIGNAL(OPUS_SIGNAL_VOICE));</span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_BITRATE(OPUS_AUTO)); <span class="comment">// 控制最大比特率，AUTO在不说话时减少带宽。</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_BANDWIDTH(OPUS_AUTO));</span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_VBR(<span class="number">1</span>));                                   <span class="comment">// 0固定码率，1动态码率</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_VBR_CONSTRAINT(<span class="number">1</span>));                        <span class="comment">// 0不受约束，1受约束（默认）</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_COMPLEXITY(<span class="number">0</span>));                            <span class="comment">// 编码复杂度0~10</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_INBAND_FEC(FEC_DISABLE));                  <span class="comment">// 算法修复丢失的数据包，0关，1开</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_FORCE_CHANNELS(channels));                 <span class="comment">// 声道数</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_DTX(<span class="number">0</span>));                                   <span class="comment">// 不连续传输，0关，1开</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_LSB_DEPTH(bit_depth));                     <span class="comment">// 位深</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_EXPERT_FRAME_DURATION(variable_duration)); <span class="comment">// 帧持续时间</span></span><br><span class="line">opus_encoder_ctl(encoder, OPUS_SET_APPLICATION(OPUS_APPLICATION_VOIP));       <span class="comment">//同编码器创建参数</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="编码-1"><a href="#编码-1" class="headerlink" title="编码"></a>编码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opus_data_len = opus_encode(encoder, pcm_data, frame_size, out_buf, out_len);</span><br></pre></td></tr></table></figure>
+
+<h3 id="销毁编码器"><a href="#销毁编码器" class="headerlink" title="销毁编码器"></a>销毁编码器</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opus_encoder_destroy(encoder);</span><br></pre></td></tr></table></figure>
+
+<h2 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h2><h3 id="创建解码器"><a href="#创建解码器" class="headerlink" title="创建解码器"></a>创建解码器</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">decoder = opus_decoder_create(sampling_rate, channels, &amp;err);</span><br><span class="line"><span class="keyword">if</span> (err != OPUS_OK)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Cannot create decoder: %s\n"</span>, opus_strerror(err));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="解码-1"><a href="#解码-1" class="headerlink" title="解码"></a>解码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pcm_data_len = opus_decode(decoder, frame_data, frame_len, out_buf, out_len, FEC_DISABLE);</span><br></pre></td></tr></table></figure>
+
+<h3 id="销毁解码器"><a href="#销毁解码器" class="headerlink" title="销毁解码器"></a>销毁解码器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opus_decoder_destroy(decoder);</span><br></pre></td></tr></table></figure>
+
+<h1 id="实际使用"><a href="#实际使用" class="headerlink" title="实际使用"></a>实际使用</h1><h2 id="注意1"><a href="#注意1" class="headerlink" title="注意1"></a>注意1</h2><p>为了减少带宽，所以每一帧的数据量都是不一样的，在编码的时候在每一帧前有四位的数据是记录的帧的长度。<br>并且此处还要注意PCM位深16位，所以一帧的数据量为采样率/FPS*2，PCM一帧的长度固定的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="built_in">running</span>)</span><br><span class="line">&#123;</span><br><span class="line">    opus_buf_len = opus_encode_frame(read_buf + decode_offset,</span><br><span class="line">                                     AUDIO_SAMPLERATE / AUDIO_FPS * <span class="keyword">sizeof</span>(opus_int16),</span><br><span class="line">                                     opus_buf, DATA_MAX_LEN);</span><br><span class="line">    fwrite(&amp;opus_buf_len, <span class="keyword">sizeof</span>(<span class="keyword">int</span>), <span class="number">1</span>, fp);</span><br><span class="line">    fwrite(opus_buf, <span class="keyword">sizeof</span>(<span class="keyword">uint8_t</span>), opus_buf_len, fp);</span><br><span class="line">    decode_offset += AUDIO_SAMPLERATE / AUDIO_FPS * <span class="keyword">sizeof</span>(opus_int16);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (decode_offset &gt;= read_size)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="注意2"><a href="#注意2" class="headerlink" title="注意2"></a>注意2</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">opus_encoder_ctl(encoder, OPUS_SET_COMPLEXITY(<span class="number">0</span>));                            <span class="comment">// 编码复杂度0~10</span></span><br></pre></td></tr></table></figure>
+
+<p>编码器的编码复杂度，随着复杂度越高，编码耗时越长。简单测试如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Complexity&#x3D;0. The run time is: 2.218s</span><br><span class="line">Complexity&#x3D;1. The run time is: 2.606s</span><br><span class="line">Complexity&#x3D;2. The run time is: 3.101s</span><br><span class="line">Complexity&#x3D;3. The run time is: 3.306s</span><br><span class="line">Complexity&#x3D;4. The run time is: 3.339s</span><br><span class="line">Complexity&#x3D;5. The run time is: 4.179s</span><br><span class="line">Complexity&#x3D;6. The run time is: 4.159s</span><br><span class="line">Complexity&#x3D;7. The run time is: 5.221s</span><br><span class="line">Complexity&#x3D;8. The run time is: 6.368s</span><br><span class="line">Complexity&#x3D;9. The run time is: 6.387s</span><br><span class="line">Complexity&#x3D;10. The run time is: 6.307s</span><br></pre></td></tr></table></figure>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/images/alishoukuan.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/images/wxshoukuan.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/02/Hexo%E6%97%A0%E6%B3%95%E8%A7%A3%E6%9E%90Markdown%E8%A1%A8%E6%A0%BC/" class="archive-article-date">
-  	<time datetime="2020-07-02T03:36:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/02/Hexo%E6%97%A0%E6%B3%95%E8%A7%A3%E6%9E%90Markdown%E8%A1%A8%E6%A0%BC/">Hexo无法解析Markdown表格</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">问题</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/02/%E5%88%9D%E8%AF%86chromuim/" class="archive-article-date">
-  	<time datetime="2020-07-02T02:43:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/02/%E5%88%9D%E8%AF%86chromuim/">认识chromuim</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">一些认识</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/28/%E5%88%9D%E8%AF%86QtWebEngine/" class="archive-article-date">
-  	<time datetime="2020-06-28T06:03:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/28/%E5%88%9D%E8%AF%86QtWebEngine/">初识QtWebEngine</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">qt</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">编码</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">c-cpp</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/04/%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%BF%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-06-04T07:01:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/04/%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%BF%E7%94%A8/">内存的使用</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -334,282 +278,112 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">c-cpp</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">内存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">音视频</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://geanqin.github.io/2022/02/23/pcm%E4%B8%8Eopus%E4%BA%92%E8%BD%AC/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/02/%E8%AE%A4%E8%AF%86%E5%90%84%E7%A7%8D%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/" class="archive-article-date">
-  	<time datetime="2020-06-02T09:32:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-02</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/10/09/%E5%88%9D%E8%AF%86%E9%9F%B3%E8%A7%86%E9%A2%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">初识音视频</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/02/%E8%AE%A4%E8%AF%86%E5%90%84%E7%A7%8D%E5%86%85%E5%AD%98%E5%9C%B0%E5%9D%80/">认识各种内存地址</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">一些认识</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">内存</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/07/ulimit/" class="archive-article-date">
-  	<time datetime="2020-05-07T06:55:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/07/ulimit/">进程的限制之ulimit</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工具</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">进程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/06/procPid/" class="archive-article-date">
-  	<time datetime="2020-05-06T06:53:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/06/procPid/">认识/proc/[pid]/</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">一些认识</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">进程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/05/06/%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/" class="archive-article-date">
-  	<time datetime="2020-05-06T01:59:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/06/%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%9F%A5%E7%9C%8B%E5%B7%A5%E5%85%B7/">进程的查看工具</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工具</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">进程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/29/%E8%AE%A4%E8%AF%86%E8%BF%9B%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2020-04-29T08:25:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-29</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/29/%E8%AE%A4%E8%AF%86%E8%BF%9B%E7%A8%8B/">认识进程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">一些认识</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">进程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/04/17/%E8%AE%A4%E8%AF%86%E5%A4%9A%E5%A4%84%E7%90%86%E5%99%A8%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2020-04-17T08:27:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/04/17/%E8%AE%A4%E8%AF%86%E5%A4%9A%E5%A4%84%E7%90%86%E5%99%A8%E6%9E%B6%E6%9E%84/">认识多处理器架构</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">一些认识</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&lt;&lt; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/3/">Next &gt;&gt;</a>
-    </nav>
-  
-
 
 
           </div>
@@ -638,8 +412,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

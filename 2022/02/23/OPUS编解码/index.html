@@ -6,17 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://GeanQin.github.io">
-  <title>pcm与opus互转 | Gean&#39;s blog</title>
+  <title>OPUS编解码 | Gean&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Opus简介Opus是什么Opus是一个有损声音编码的格式，由Xiph.Org基金会开发，之后由互联网工程任务(IETF)组进行标准化，目标是希望用单一格式包含声音和语音，取代Speex和Vorbis，且适用于网络上低延迟的实时语音频传输场景，标准格式定义于RFC 6716文件。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pcm与opus互转">
+<meta property="og:title" content="OPUS编解码">
 <meta property="og:url" content="https://geanqin.github.io/2022/02/23/OPUS%E7%BC%96%E8%A7%A3%E7%A0%81/index.html">
 <meta property="og:site_name" content="Gean&#39;s blog">
 <meta property="og:description" content="Opus简介Opus是什么Opus是一个有损声音编码的格式，由Xiph.Org基金会开发，之后由互联网工程任务(IETF)组进行标准化，目标是希望用单一格式包含声音和语音，取代Speex和Vorbis，且适用于网络上低延迟的实时语音频传输场景，标准格式定义于RFC 6716文件。">
 <meta property="article:published_time" content="2022-02-23T13:25:08.000Z">
-<meta property="article:modified_time" content="2025-08-03T14:26:57.385Z">
+<meta property="article:modified_time" content="2025-08-03T15:52:14.473Z">
 <meta property="article:author" content="吉 安">
+<meta property="article:tag" content="学习">
 <meta property="article:tag" content="C语言">
 <meta property="article:tag" content="音视频">
 <meta name="twitter:card" content="summary">
@@ -180,7 +181,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      pcm与opus互转
+      OPUS编解码
     </h1>
   
 
@@ -225,6 +226,7 @@
 
 <p>编码器的编码复杂度，随着复杂度越高，编码耗时越长。简单测试如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Complexity&#x3D;0. The run time is: 2.218s</span><br><span class="line">Complexity&#x3D;1. The run time is: 2.606s</span><br><span class="line">Complexity&#x3D;2. The run time is: 3.101s</span><br><span class="line">Complexity&#x3D;3. The run time is: 3.306s</span><br><span class="line">Complexity&#x3D;4. The run time is: 3.339s</span><br><span class="line">Complexity&#x3D;5. The run time is: 4.179s</span><br><span class="line">Complexity&#x3D;6. The run time is: 4.159s</span><br><span class="line">Complexity&#x3D;7. The run time is: 5.221s</span><br><span class="line">Complexity&#x3D;8. The run time is: 6.368s</span><br><span class="line">Complexity&#x3D;9. The run time is: 6.387s</span><br><span class="line">Complexity&#x3D;10. The run time is: 6.307s</span><br></pre></td></tr></table></figure>
+
       
 
       
@@ -267,6 +269,10 @@
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">学习</a>
+        		</li>
+      		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C语言</a>
         		</li>
@@ -486,19 +492,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">QT</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -507,6 +501,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">音视频</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">QT</a>
               </li>
              
               <li class="article-tag-list-item">
